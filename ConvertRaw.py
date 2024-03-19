@@ -24,17 +24,11 @@ class ConvertRaw:
             mat.append(x)
             test = 0
 
-        final = ""
+        final = []
         test = 0
         for ligne in mat:
-            if test == 0:
-                final += ("[" + str(ligne) + ',')
-                test += 1
-            elif test < 8:
-                final += (str(ligne) + ',')
-                test += 1
-            else:
-                final += (str(ligne) + ']')
+            final.append (ligne)
+
 
         return final
 
