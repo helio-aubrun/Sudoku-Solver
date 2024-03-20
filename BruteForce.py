@@ -25,45 +25,45 @@ class BruteForce:
                     return i, j
         return None
 
-    def est_coup_valide(self, ligne, colonne, chiffre):
+    def valid_move(self, line, column, number):
         for i in range(9):
-            if self.grid[ligne][i] == chiffre or self.grid[i][colonne] == chiffre or self.grid[(ligne // 3) * 3 + i // 3][(colonne // 3) * 3 + i % 3] == chiffre:
+            if self.grid[line][i] == number or self.grid[i][column] == number or self.grid[(line // 3) * 3 + i // 3][(column // 3) * 3 + i % 3] == number:
                 return False
         return True
 
-    def resoudre_sudoku(self):
-        case_vide = self.empty_case()
-        if not case_vide:
+    def resolve(self):
+        empty_case = self.empty_case()
+        if not empty_case:
             return True
 
-        ligne, colonne = case_vide
+        line, column = empty_case
 
-        for chiffre in range(1, 10):
-            if self.est_coup_valide(ligne, colonne, chiffre):
-                self.grid[ligne][colonne] = chiffre
+        for number in range(1, 10):
+            if self.valid_move(line, column, number):
+                self.grid[line][column] = number
 
-                if self.resoudre_sudoku():
+                if self.resolve():
                     return True
 
-                self.grid[ligne][colonne] = 0
+                self.grid[line][column] = 0
 
         return False
 
 
 if __name__ == "__main__":
-    fichier_sudoku = input("Entrez le nom du fichier Sudoku : ")
+    sudoku_file = input("Entrez le nom du fichier Sudoku : ")
 
     try:
-        with open(fichier_sudoku, "r") as file:
-            ma_matrice = [[int(num) if num != '_' else 0 for num in line.strip()] for line in file]
+        with open(sudoku_file, "r") as file:
+            matrix = [[int(num) if num != '_' else 0 for num in line.strip()] for line in file]
 
-        solveur = BruteForce(ma_matrice)
+        solveur = BruteForce(matrix)
         print("grid de Sudoku à résoudre :")
         solveur.draw_terminal()
         print("\nRésolution en cours...\n")
 
         start_time = time.time()
-        if solveur.resoudre_sudoku():
+        if solveur.resolve():
             print("Sudoku Résolu :")
             solveur.draw_terminal()
             print("Temps d'exécution:", time.time() - start_time, "secondes")

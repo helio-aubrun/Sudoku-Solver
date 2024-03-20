@@ -63,7 +63,7 @@ class SudokuSolver:
     def solve_with_brute_force(self, grid):
         start_time = time.time()
         solver = BruteForce(grid)
-        if solver.resoudre_sudoku():
+        if solver.resolve():
             return time.time() - start_time, True
         else:
             return 0, False
