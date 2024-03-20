@@ -32,6 +32,24 @@ class SudokuSolver:
                 row = [int(num) if num != '_' else 0 for num in line.strip()]
                 sudoku_grid.append(row)
         return sudoku_grid
+    
+    def draw_grid_lines(self):
+        cell_size = self.WIDTH // 9
+        line_color_gray = (128, 128, 128) # Couleur grise pour les lignes du quadrillage
+        line_color_black = (0, 0, 0) # Couleur noire pour les lignes des carrés 3x3
+        line_width = 2 # Largeur des lignes
+        sudoku_height = 9 * cell_size # Hauteur des cases du sudoku
+    
+        # Dessine les lignes verticales et horizontales du quadrillage
+        for i in range(1, 9):
+            pygame.draw.line(self.SCREEN, line_color_gray, (i * cell_size, 0), (i * cell_size, sudoku_height), line_width)
+            pygame.draw.line(self.SCREEN, line_color_gray, (0, i * cell_size), (self.WIDTH, i * cell_size), line_width)
+
+        # Dessine les lignes noires pour délimiter les carrés 3x3
+        for i in range(0, 10, 3): # Dessine les lignes verticales noires
+            pygame.draw.line(self.SCREEN, line_color_black, (i * cell_size, 0), (i * cell_size, sudoku_height), line_width)
+        for i in range(0, 10, 3): # Dessine les lignes horizontales noires
+            pygame.draw.line(self.SCREEN, line_color_black, (0, i * cell_size), (self.WIDTH, i * cell_size), line_width)
 
     def draw_sudoku(self, grid):
         cell_size = self.WIDTH // 9
@@ -43,6 +61,7 @@ class SudokuSolver:
                     text_surface = font.render(str(cell_value), True, self.BLACK)
                     text_rect = text_surface.get_rect(center=(j * cell_size + cell_size // 2, i * cell_size + cell_size // 2))
                     self.SCREEN.blit(text_surface, text_rect)
+        self.draw_grid_lines()
 
     def draw_buttons(self):
         font = pygame.font.Font(None, 36)
@@ -94,9 +113,9 @@ class SudokuSolver:
                                     self.sudoku_grid = self.load_sudoku(selected_file)
                                     break
                             self.solving_method = None
-                        elif event.pos[0] > self.WIDTH // 4 - 100 and event.pos[0] < self.WIDTH // 4 and event.pos[1] > self.HEIGHT - 80 and event.pos[1] < self.HEIGHT - 40:
+                        elif event.pos[0] > self.WIDTH // 4 - 100 and event.pos[0] < self.WIDTH // 4 and event.pos[1] > self.HEIGHT - 40 and event.pos[1] < self.HEIGHT:
                             self.solving_method = self.solve_with_brute_force
-                        elif event.pos[0] > 3 * self.WIDTH // 4 and event.pos[0] < 3 * self.WIDTH // 4 + 100 and event.pos[1] > self.HEIGHT - 80 and event.pos[1] < self.HEIGHT - 40:
+                        elif event.pos[0] > 3 * self.WIDTH // 4 and event.pos[0] < 3 * self.WIDTH // 4 + 100 and event.pos[1] > self.HEIGHT - 40 and event.pos[1] < self.HEIGHT:
                             self.solving_method = self.solve_with_recursion
                         elif event.pos[0] > self.WIDTH // 2 - 50 and event.pos[0] < self.WIDTH // 2 + 50 and event.pos[1] > self.HEIGHT - 40 and event.pos[1] < self.HEIGHT:
                             self.sudoku_grid = None
@@ -112,8 +131,8 @@ class SudokuSolver:
                 text_surface1 = font.render("Brute Force", True, self.BLACK)
                 text_surface2 = font.render("Recursion", True, self.BLACK)
                 text_surface3 = font.render("Retour", True, self.BLACK)
-                text_rect1 = text_surface1.get_rect(center=(self.WIDTH // 4 - 50, self.HEIGHT - 60))
-                text_rect2 = text_surface2.get_rect(center=(3 * self.WIDTH // 4 + 50, self.HEIGHT - 60))
+                text_rect1 = text_surface1.get_rect(center=(self.WIDTH // 4 - 50, self.HEIGHT - 20))
+                text_rect2 = text_surface2.get_rect(center=(3 * self.WIDTH // 4 + 50, self.HEIGHT - 20))
                 text_rect3 = text_surface3.get_rect(center=(self.WIDTH // 2, self.HEIGHT - 20))
                 pygame.draw.rect(self.SCREEN, self.RED, (text_rect3.x - 10, text_rect3.y - 10, text_rect3.width + 20, text_rect3.height + 20))
                 self.SCREEN.blit(text_surface1, text_rect1)
