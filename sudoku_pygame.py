@@ -2,7 +2,7 @@ import pygame
 import sys
 import time
 from BruteForce import BruteForce
-from RecursiveSolver import Recursivesolver
+"""from RecursiveSolver import Recursivesolver"""
 
 class SudokuSolver:
     def __init__(self):
@@ -68,13 +68,13 @@ class SudokuSolver:
         else:
             return 0, False
 
-    def solve_with_recursion(self, grid):
+    """def solve_with_recursion(self, grid):
         start_time = time.time()
         solver = Recursivesolver(grid)
         if solver.solve():
             return time.time() - start_time, True
         else:
-            return 0, False
+            return 0, False"""
 
     def run(self):
         running = True
