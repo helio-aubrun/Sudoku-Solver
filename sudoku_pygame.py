@@ -116,7 +116,7 @@ class SudokuSolver:
                         elif event.pos[0] > self.WIDTH // 4 - 100 and event.pos[0] < self.WIDTH // 4 and event.pos[1] > self.HEIGHT - 40 and event.pos[1] < self.HEIGHT:
                             self.solving_method = self.solve_with_brute_force
                         elif event.pos[0] > 3 * self.WIDTH // 4 and event.pos[0] < 3 * self.WIDTH // 4 + 100 and event.pos[1] > self.HEIGHT - 40 and event.pos[1] < self.HEIGHT:
-                            self.solving_method = self.solve_with_recursion
+                            pass
                         elif event.pos[0] > self.WIDTH // 2 - 50 and event.pos[0] < self.WIDTH // 2 + 50 and event.pos[1] > self.HEIGHT - 40 and event.pos[1] < self.HEIGHT:
                             self.sudoku_grid = None
                             self.selected_button = None
@@ -125,6 +125,7 @@ class SudokuSolver:
             if self.sudoku_grid:
                 if self.solving_method:
                     self.solve_time, _ = self.solving_method(self.sudoku_grid)
+                    # Assurez-vous que self.solve_time est correctement mis à jour ici
                 self.draw_sudoku(self.sudoku_grid)
                 font = pygame.font.Font(None, 36)
                 font_temps= pygame.font.Font(None, 18)
@@ -140,7 +141,7 @@ class SudokuSolver:
                 self.SCREEN.blit(text_surface3, text_rect3)
                
                 if self.solve_time is not None:
-                    solve_time_text = f"Temps de résolution: {self.solve_time:.2f} secondes"
+                    solve_time_text = f"Temps de résolution: {self.solve_time:.4f} secondes"
                     solve_time_surface = font_temps.render(solve_time_text, True, self.BLACK)
                     solve_time_rect = solve_time_surface.get_rect(center=(self.WIDTH // 4.7, self.HEIGHT - 8))
                     self.SCREEN.blit(solve_time_surface, solve_time_rect) 
