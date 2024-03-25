@@ -53,9 +53,7 @@ class SudokuSolver:
                     text_rect = text_surface.get_rect(center=(j * cell_size + cell_size // 2, i * cell_size + cell_size // 2))
                     self.SCREEN.blit(text_surface, text_rect)
                 # Dessiner la grid
-                for i in range(9):
-                    for j in range(9):
-                        pygame.draw.rect(self.SCREEN, self.BLACK, (j * cell_size, i * cell_size, cell_size, cell_size), 1)
+                pygame.draw.rect(self.SCREEN, self.BLACK, (j * cell_size, i * cell_size, cell_size, cell_size), 1)
 
     def draw_buttons(self):
         # Dessiner les boutons pour sélectionner les grids Sudoku
@@ -94,18 +92,19 @@ class SudokuSolver:
         else:
             return 0, False
 
-    def compare_grids(self, original_grid, solved_grid):
+    def compare_grids(self, original_grid):
         missing_numbers = []
         for i in range(9):
             for j in range(9):
-                if original_grid[i][j] == 0 and solved_grid[i][j] != 0:
-                    missing_numbers.append((i, j, solved_grid[i][j]))
+                if original_grid[i][j] == 0 :
+                    missing_numbers.append((i, j))
         return missing_numbers
 
     def run(self):
         # Lancer le programme principal
         start_program_time = time.time()  # Enregistrer le temps de départ du programme
         running = True
+        missing_numbers = None
         while running:
             self.SCREEN.fill(self.WHITE)
             for event in pygame.event.get():
@@ -131,22 +130,25 @@ class SudokuSolver:
                             self.selected_button = None
                             self.solving_method = None
                             self.solve_time = None
+                            missing_numbers = None
                         if event.button == 1:  # L'utilisateur clique avec le bouton gauche de la souris
                             cell_size = self.WIDTH // 9
 
             if self.sudoku_grid:
                 if self.solving_method and self.solve_time is None:
+                    missing_numbers = self.compare_grids(self.sudoku_grid)
                     start_solve_time = time.time()
                     success, solved_grid = self.solving_method(self.sudoku_grid)
                     end_solve_time = time.time()
                     self.solve_time = end_solve_time - start_solve_time
                     if success:
-                        missing_numbers = self.compare_grids(self.sudoku_grid, solved_grid)
                         self.draw_sudoku(self.sudoku_grid, missing_numbers)
                     else:
                         print("La résolution a échoué.")
-
-                self.draw_sudoku(self.sudoku_grid)
+                if missing_numbers:
+                    self.draw_sudoku(self.sudoku_grid, missing_numbers)
+                else:
+                    self.draw_sudoku(self.sudoku_grid)
                 font = pygame.font.Font(None, 36)
                 font_temps = pygame.font.Font(None, 18)
                 text_surface1 = font.render("Brute Force", True, self.BLACK)
