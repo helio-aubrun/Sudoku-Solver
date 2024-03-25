@@ -29,7 +29,7 @@ class SudokuSolver:
         self.solve_time = None
 
     def load_sudoku(self, filename):
-        # Charger une grille Sudoku à partir d'un fichier texte
+        # Charger une grid Sudoku à partir d'un fichier texte
         sudoku_grid = []
         with open(filename, 'r') as file:
             for line in file:
@@ -38,7 +38,7 @@ class SudokuSolver:
         return sudoku_grid
 
     def draw_sudoku(self, grid, missing_numbers=None):
-        # Dessiner la grille Sudoku sur l'écran
+        # Dessiner la grid Sudoku sur l'écran
         cell_size = self.WIDTH // 9
         for i in range(9):
             for j in range(9):
@@ -52,13 +52,13 @@ class SudokuSolver:
                     text_surface = font.render(str(cell_value), True, color)
                     text_rect = text_surface.get_rect(center=(j * cell_size + cell_size // 2, i * cell_size + cell_size // 2))
                     self.SCREEN.blit(text_surface, text_rect)
-                # Dessiner la grille
+                # Dessiner la grid
                 for i in range(9):
                     for j in range(9):
                         pygame.draw.rect(self.SCREEN, self.BLACK, (j * cell_size, i * cell_size, cell_size, cell_size), 1)
 
     def draw_buttons(self):
-        # Dessiner les boutons pour sélectionner les grilles Sudoku
+        # Dessiner les boutons pour sélectionner les grids Sudoku
         font = pygame.font.Font(None, 36)
         button_labels = ["Sudoku 1", "Sudoku 2", "Sudoku 3", "Sudoku 4"]  # Ajout de "Sudoku 5"
         button_rects = []
@@ -75,17 +75,17 @@ class SudokuSolver:
         return button_rects
 
     def solve_with_brute_force(self, grid):
-        # Résoudre la grille Sudoku en utilisant la méthode de la force brute
+        # Résoudre la grid Sudoku en utilisant la méthode de la force brute
         start_time = time.time()
         solver = BruteForce(grid)
-        if solver.resoudre_sudoku_bruteforce():
+        if solver.resolve_sudoku_brutforce():
             end_time = time.time()
             return end_time - start_time, True
         else:
             return 0, False
 
     def solve_with_recursion(self, grid):
-        # Résoudre la grille Sudoku en utilisant la méthode de la récursion
+        # Résoudre la grid Sudoku en utilisant la méthode de la récursion
         start_time = time.time()
         solver = BackTracking(grid)
         if solver.resoudre_sudoku():
