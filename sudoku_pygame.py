@@ -58,7 +58,7 @@ class SudokuSolver:
     def draw_buttons(self):
         # Dessiner les boutons pour sélectionner les grids Sudoku
         font = pygame.font.Font(None, 36)
-        button_labels = ["Sudoku 1", "Sudoku 2", "Sudoku 3", "Sudoku 4"]  # Ajout de "Sudoku 5"
+        button_labels = ["Sudoku 1", "Sudoku 2", "Sudoku 3", "Sudoku 4", "Sudoku 5", "Brute Force"]
         button_rects = []
         button_height = 60
         for i, label in enumerate(button_labels):
@@ -86,7 +86,7 @@ class SudokuSolver:
         # Résoudre la grid Sudoku en utilisant la méthode de la récursion
         start_time = time.time()
         solver = BackTracking(grid)
-        if solver.resoudre_sudoku():
+        if solver.solve_sudoku():
             end_time = time.time()
             return end_time - start_time, True
         else:
@@ -118,9 +118,14 @@ class SudokuSolver:
                             for i, rect in enumerate(button_rects):
                                 if rect.collidepoint(event.pos):
                                     self.selected_button = i
-                                    selected_file = f"sudoku{i+1}.txt"
-                                    self.sudoku_grid = self.load_sudoku(selected_file)
-                                    break
+                                    if i == 5 :
+                                        selected_file = f"resolved_matrix1.txt"
+                                        self.sudoku_grid = self.load_sudoku(selected_file)
+                                        break
+                                    else :
+                                        selected_file = f"sudoku{i+1}.txt"
+                                        self.sudoku_grid = self.load_sudoku(selected_file)
+                                        break
                             self.solving_method = None
                         elif 548 < y < 592:
                             if 19 < x < 157:
