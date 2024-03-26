@@ -7,7 +7,7 @@ class BruteForce:
         self.grid = grid
 
     #display the grid with a user friendly format
-    def disolay_grid(self):
+    def display_grid(self):
         for i in range(9):
             if i % 3 == 0 and i != 0:
                 print("- - - - - - - - - - - -")
