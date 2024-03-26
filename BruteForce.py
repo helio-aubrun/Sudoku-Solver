@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     try:
         
-        #transforme the given sudoku into the required format
+        #transform the given sudoku into the required format
         with open(fichier_sudoku, "r") as file:
 
             my_matrix = [[int(num) if num != '_' else 0 for num in line.strip()] for line in file]
