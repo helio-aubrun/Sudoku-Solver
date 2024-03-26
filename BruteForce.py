@@ -68,13 +68,13 @@ if __name__ == "__main__":
         solveur = BruteForce(my_matrix)
         solveur.add_empty (int (input ("donner le nombre de case a vider : \n")))
         print("grid de Sudoku à résoudre :")
-        solveur.disolay_grid()
+        solveur.display_grid()
         print("\nRésolution en cours...\n")
 
         start_time = time.time()
         if solveur.resolve_sudoku_brutforce():
             print("Sudoku Résolu :")
-            solveur.disolay_grid()
+            solveur.display_grid()
             print("Temps d'exécution:", time.time() - start_time, "secondes")
         else:
             print("Pas de solution possible.")
