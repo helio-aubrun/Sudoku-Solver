@@ -4,7 +4,8 @@ class BackTracking:
     def __init__(self, grid):
         self.grid = grid
 
-    def disolay_grid(self):
+    #display the sudoku grid
+    def display_grid(self):
         for i in range(9):
             if i % 3 == 0 and i != 0:
                 print("- - - - - - - - - - - -")
@@ -18,21 +19,24 @@ class BackTracking:
                 else:
                     print(str(self.grid[i][j]) + " ", end="")
 
-    def trouver_case_vide(self):
+    #find empty spots to fill them
+    def find_empty_spotes(self):
         for i in range(9):
             for j in range(9):
                 if self.grid[i][j] == 0:
                     return i, j
         return None
 
+    #test if the gicven number is valid
     def valid_number(self, ligne, colonne, chiffre):
         for i in range(9):
             if self.grid[ligne][i] == chiffre or self.grid[i][colonne] == chiffre or self.grid[(ligne // 3) * 3 + i // 3][(colonne // 3) * 3 + i % 3] == chiffre:
                 return False
         return True
 
-    def resoudre_sudoku(self):
-        case_vide = self.trouver_case_vide()
+    #solve the sudoku game
+    def solve_sudoku(self):
+        case_vide = self.find_empty_spotes()
         if not case_vide:
             return True
 
@@ -42,7 +46,7 @@ class BackTracking:
             if self.valid_number(ligne, colonne, chiffre):
                 self.grid[ligne][colonne] = chiffre
 
-                if self.resoudre_sudoku():
+                if self.solve_sudoku():
                     return True
 
                 self.grid[ligne][colonne] = 0
@@ -59,13 +63,13 @@ if __name__ == "__main__":
 
         solveur = BackTracking(my_matrix)
         print("grid de Sudoku à résoudre :")
-        solveur.disolay_grid()
+        solveur.display_grid()
         print("\nRésolution en cours...\n")
 
         start_time = time.time()
-        if solveur.resoudre_sudoku():
+        if solveur.solve_sudoku():
             print("Sudoku Résolu :")
-            solveur.disolay_grid()
+            solveur.display_grid()
             print("Temps d'exécution:", time.time() - start_time, "secondes")
         else:
             print("Pas de solution possible.")
