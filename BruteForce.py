@@ -44,10 +44,8 @@ class BruteForce:
         return False
     
     # !!!require a resolved sudoku!!! empty random location of the sudoku to creat differents games to test the brut force speed 
-    def add_empty (self) :
-        nb_empty = int (input ("donner le nombre de case a vider : \n"))
+    def add_empty (self, nb_empty) :
         while nb_empty > 0 :
-            print (nb_empty)
             random_x = randint (0, 8)
             random_y = randint (0, 8)
             if not self.grid [random_x][random_y] == 0 :
@@ -68,7 +66,7 @@ if __name__ == "__main__":
 
         
         solveur = BruteForce(my_matrix)
-        solveur.add_empty ()
+        solveur.add_empty (int (input ("donner le nombre de case a vider : \n")))
         print("grid de Sudoku à résoudre :")
         solveur.disolay_grid()
         print("\nRésolution en cours...\n")
