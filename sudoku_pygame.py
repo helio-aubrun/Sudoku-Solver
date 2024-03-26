@@ -124,8 +124,6 @@ class SudokuSolver:
                             self.solving_method = None
                         elif 548 < y < 592:
                             if 19 < x < 157:
-                                self.solving_method = self.solve_with_brute_force
-                            elif 397 < x < 512:
                                 self.solving_method = self.solve_with_recursion
                             elif 237 < x < 333:
                                 self.sudoku_grid = None
@@ -153,21 +151,18 @@ class SudokuSolver:
                     self.draw_sudoku(self.sudoku_grid)
                 font = pygame.font.Font(None, 36)
                 font_temps = pygame.font.Font(None, 18)
-                text_surface1 = font.render("Brute Force", True, self.BLACK)
-                text_surface2 = font.render("Recursion", True, self.BLACK)
+                text_surface1 = font.render("Recursion", True, self.BLACK)
                 text_surface3 = font.render("Retour", True, self.BLACK)
                 text_rect1 = text_surface1.get_rect(center=(self.WIDTH // 4 - 50, self.HEIGHT - 30))
-                text_rect2 = text_surface2.get_rect(center=(3 * self.WIDTH // 4 + 50, self.HEIGHT - 30))
                 text_rect3 = text_surface3.get_rect(center=(self.WIDTH // 1.9, self.HEIGHT - 30))
                 pygame.draw.rect(self.SCREEN, self.RED, (text_rect3.x - 10, text_rect3.y - 10, text_rect3.width + 20, text_rect3.height + 20))
                 self.SCREEN.blit(text_surface1, text_rect1)
-                self.SCREEN.blit(text_surface2, text_rect2)
                 self.SCREEN.blit(text_surface3, text_rect3)
             
                 if self.solve_time is not None:
-                    solve_time_text = f"Temps de résolution: {self.solve_time:.4f} secondes"
+                    solve_time_text = f"Temps de résolution: {self.solve_time:.4f} s"
                     solve_time_surface = font_temps.render(solve_time_text, True, self.BLACK)
-                    solve_time_rect = solve_time_surface.get_rect(center=(self.WIDTH // 4.7, self.HEIGHT - 8))
+                    solve_time_rect = solve_time_surface.get_rect(center=(self.WIDTH // 1.9 + 160, self.HEIGHT - 28))
                     self.SCREEN.blit(solve_time_surface, solve_time_rect) 
 
             else:
