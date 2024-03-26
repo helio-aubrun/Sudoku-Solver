@@ -112,6 +112,7 @@ class SudokuSolver:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
+                        x,y = event.pos
                         if self.sudoku_grid is None:
                             button_rects = self.draw_buttons()
                             for i, rect in enumerate(button_rects):
@@ -121,16 +122,17 @@ class SudokuSolver:
                                     self.sudoku_grid = self.load_sudoku(selected_file)
                                     break
                             self.solving_method = None
-                        elif event.pos[0] > self.WIDTH // 4 - 100 and event.pos[0] < self.WIDTH // 4 and event.pos[1] > self.HEIGHT - 80 and event.pos[1] < self.HEIGHT - 30:
-                            self.solving_method = self.solve_with_brute_force
-                        elif event.pos[0] > 3 * self.WIDTH // 4 and event.pos[0] < 3 * self.WIDTH // 4 + 100 and event.pos[1] > self.HEIGHT - 80 and event.pos[1] < self.HEIGHT - 30:
-                            self.solving_method = self.solve_with_recursion
-                        elif event.pos[0] > self.WIDTH // 2 - 50 and event.pos[0] < self.WIDTH // 2 + 50 and event.pos[1] > self.HEIGHT - 30 and event.pos[1] < self.HEIGHT:
-                            self.sudoku_grid = None
-                            self.selected_button = None
-                            self.solving_method = None
-                            self.solve_time = None
-                            missing_numbers = None
+                        elif 548 < y < 592:
+                            if 19 < x < 157:
+                                self.solving_method = self.solve_with_brute_force
+                            elif 397 < x < 512:
+                                self.solving_method = self.solve_with_recursion
+                            elif 237 < x < 333:
+                                self.sudoku_grid = None
+                                self.selected_button = None
+                                self.solving_method = None
+                                self.solve_time = None
+                                missing_numbers = None
                         if event.button == 1:  # L'utilisateur clique avec le bouton gauche de la souris
                             cell_size = self.WIDTH // 9
 
