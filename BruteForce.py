@@ -45,12 +45,14 @@ class BruteForce:
     
     # !!!require a resolved sudoku!!! empty random location of the sudoku to creat differents games to test the brut force speed 
     def add_empty (self, nb_empty) :
+        print (nb_empty)
         while nb_empty > 0 :
             random_x = randint (0, 8)
             random_y = randint (0, 8)
             if not self.grid [random_x][random_y] == 0 :
                 self.grid [random_x][random_y] = 0
                 nb_empty -= 1
+        print (nb_empty)
             
 
 if __name__ == "__main__":
