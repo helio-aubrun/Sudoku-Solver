@@ -2,8 +2,8 @@ import pygame
 import sys
 import time
 import random
-from BruteForce import BruteForce
-from BackTracking import BackTracking
+from py.BruteForce import BruteForce
+from py.BackTracking import BackTracking
 
 class SudokuSolver:
     def __init__(self):
@@ -116,7 +116,7 @@ class SudokuSolver:
                     if pygame.K_1 <= event.key <= pygame.K_9:
                         self.input_value = event.key - pygame.K_0 # Convert key to digit
                         print(self.input_value)
-                    elif event.key == pygame.K_RETURN and selected_file == "resolved_matrix1.txt":
+                    elif event.key == pygame.K_RETURN and selected_file == "txt/resolved_matrix1.txt":
                         self.solving_method = self.solve_with_brute_force
                         # Process input here if needed
                 elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -128,15 +128,15 @@ class SudokuSolver:
                                 if rect.collidepoint(event.pos):
                                     self.selected_button = i
                                     if i ==5 :
-                                        selected_file = f"resolved_matrix1.txt"
+                                        selected_file = f"txt/resolved_matrix1.txt"
                                         self.sudoku_grid = self.load_sudoku(selected_file)
                                         break
                                     else :
-                                        selected_file = f"sudoku{i+1}.txt"
+                                        selected_file = f"txt/sudoku{i+1}.txt"
                                         self.sudoku_grid = self.load_sudoku(selected_file)
                                         break
                             self.solving_method = None
-                        elif selected_file == "resolved_matrix1.txt":
+                        elif selected_file == "txt/resolved_matrix1.txt":
                             if 548 < y < 592:
                                 if 237 < x < 333:
                                     self.sudoku_grid = None
@@ -160,7 +160,7 @@ class SudokuSolver:
                 if self.solving_method and self.solve_time is None:
                     missing_numbers = self.compare_grids(self.sudoku_grid)
                     start_solve_time = time.time()
-                    if selected_file == "resolved_matrix1.txt":
+                    if selected_file == "txt/resolved_matrix1.txt":
                         success, solved_grid = self.solving_method(self.sudoku_grid,self.input_value)
                     else :
                         success, solved_grid = self.solving_method(self.sudoku_grid)
@@ -176,14 +176,14 @@ class SudokuSolver:
                     self.draw_sudoku(self.sudoku_grid)
                 font = pygame.font.Font(None, 36)
                 font_time = pygame.font.Font(None, 18)
-                text_surface1 = font.render("Recursion", True, self.BLACK)
+                text_surface1 = font.render("BackTracking", True, self.BLACK)
                 text_surface2 = font.render("BruteForce", True, self.BLACK)
                 text_surface3 = font.render("Back", True, self.BLACK)
                 text_rect1 = text_surface1.get_rect(center=(self.WIDTH // 4 - 50, self.HEIGHT - 30))
                 text_rect2 = text_surface2.get_rect(center=(self.WIDTH // 4 - 50, self.HEIGHT - 30))
                 text_rect3 = text_surface3.get_rect(center=(self.WIDTH // 1.9, self.HEIGHT - 30))
                 pygame.draw.rect(self.SCREEN, self.RED, (text_rect3.x - 10, text_rect3.y - 10, text_rect3.width + 20, text_rect3.height + 20))
-                if selected_file == "resolved_matrix1.txt":
+                if selected_file == "txt/resolved_matrix1.txt":
                     if self.input_value is not None:
                         text_surface = pygame.font.Font(None, 36).render(str(self.input_value), True, self.BLACK)
                         text_rect = text_surface.get_rect(center=(self.WIDTH // 4 - 50, self.HEIGHT - 30))
