@@ -13,6 +13,7 @@ class SudokuSolver:
         self.GRAY = (200, 200, 200)
         self.GREEN = (0, 128, 0)
         self.RED = (255, 0, 0)
+        self.input_value = None
 
         # Initialisation de Pygame
         pygame.init()
@@ -72,10 +73,11 @@ class SudokuSolver:
             button_rects.append(text_rect)
         return button_rects
 
-    def solve_with_brute_force(self, grid):
+    def solve_with_brute_force(self, grid, empty):
         # Résoudre la grid Sudoku en utilisant la méthode de la force brute
         start_time = time.time()
         solver = BruteForce(grid)
+        solver.add_empty(empty)
         if solver.resolve_sudoku_brutforce():
             end_time = time.time()
             return end_time - start_time, True
@@ -110,6 +112,13 @@ class SudokuSolver:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                elif event.type == pygame.KEYDOWN:
+                    if pygame.K_1 <= event.key <= pygame.K_9:
+                        self.input_value = event.key - pygame.K_0 # Convertir la touche en chiffre
+                        print (self.input_value)
+                    elif event.key == pygame.K_RETURN and selected_file == "resolved_matrix1.txt":
+                        self.solving_method = self.solve_with_brute_force
+                        # Traiter l'entrée ici si nécessaire
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         x,y = event.pos
@@ -118,7 +127,7 @@ class SudokuSolver:
                             for i, rect in enumerate(button_rects):
                                 if rect.collidepoint(event.pos):
                                     self.selected_button = i
-                                    if i == 5 :
+                                    if i ==5 :
                                         selected_file = f"resolved_matrix1.txt"
                                         self.sudoku_grid = self.load_sudoku(selected_file)
                                         break
@@ -127,6 +136,14 @@ class SudokuSolver:
                                         self.sudoku_grid = self.load_sudoku(selected_file)
                                         break
                             self.solving_method = None
+                        elif selected_file == "resolved_matrix1.txt":
+                            if 548 < y < 592:
+                                if 237 < x < 333:
+                                    self.sudoku_grid = None
+                                    self.selected_button = None
+                                    self.solving_method = None
+                                    self.solve_time = None
+                                    missing_numbers = None
                         elif 548 < y < 592:
                             if 19 < x < 157:
                                 self.solving_method = self.solve_with_recursion
@@ -143,7 +160,10 @@ class SudokuSolver:
                 if self.solving_method and self.solve_time is None:
                     missing_numbers = self.compare_grids(self.sudoku_grid)
                     start_solve_time = time.time()
-                    success, solved_grid = self.solving_method(self.sudoku_grid)
+                    if selected_file == "resolved_matrix1.txt":
+                        success, solved_grid = self.solving_method(self.sudoku_grid,self.input_value)
+                    else :
+                        success, solved_grid = self.solving_method(self.sudoku_grid)
                     end_solve_time = time.time()
                     self.solve_time = end_solve_time - start_solve_time
                     if success:
@@ -157,11 +177,21 @@ class SudokuSolver:
                 font = pygame.font.Font(None, 36)
                 font_temps = pygame.font.Font(None, 18)
                 text_surface1 = font.render("Recursion", True, self.BLACK)
+                text_surface2 = font.render("BruteForce", True, self.BLACK)
                 text_surface3 = font.render("Retour", True, self.BLACK)
                 text_rect1 = text_surface1.get_rect(center=(self.WIDTH // 4 - 50, self.HEIGHT - 30))
+                text_rect2 = text_surface2.get_rect(center=(self.WIDTH // 4 - 50, self.HEIGHT - 30))
                 text_rect3 = text_surface3.get_rect(center=(self.WIDTH // 1.9, self.HEIGHT - 30))
                 pygame.draw.rect(self.SCREEN, self.RED, (text_rect3.x - 10, text_rect3.y - 10, text_rect3.width + 20, text_rect3.height + 20))
-                self.SCREEN.blit(text_surface1, text_rect1)
+                if selected_file == "resolved_matrix1.txt":
+                    """self.SCREEN.blit(text_surface2, text_rect2)"""
+                    if self.input_value is not None:
+                        text_surface = pygame.font.Font(None, 36).render(str(self.input_value), True, self.BLACK)
+                        text_rect = text_surface.get_rect(center=(self.WIDTH // 4 - 50, self.HEIGHT - 30))
+                        self.SCREEN.blit(text_surface, text_rect)
+                    pygame.draw.rect(self.SCREEN, self.BLACK, (text_rect2.x - 10, text_rect2.y - 10, text_rect2.width + 20, text_rect2.height + 20), 2)
+                else :
+                    self.SCREEN.blit(text_surface1, text_rect1)
                 self.SCREEN.blit(text_surface3, text_rect3)
             
                 if self.solve_time is not None:
@@ -177,34 +207,6 @@ class SudokuSolver:
 
         pygame.quit()
         sys.exit()
-
-    def get_input(self):
-        # Obtenir l'entrée de l'utilisateur pour remplir une case vide
-        input_value = None
-        font = pygame.font.Font(None, 48)
-        input_text = ""
-        input_rect = pygame.Rect(self.WIDTH // 4, self.HEIGHT - 50, self.WIDTH // 2, 40)
-        active = True
-        while active:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if pygame.K_1 <= event.key <= pygame.K_9:
-                        input_text += chr(event.key)
-                    elif event.key == pygame.K_RETURN:
-                        if input_text.isdigit() and 1 <= int(input_text) <= 9:
-                            input_value = int(input_text)
-                            active = False
-                            break
-                    elif event.key == pygame.K_BACKSPACE:
-                        input_text = input_text[:-1]
-
-            pygame.draw.rect(self.SCREEN, self.WHITE, input_rect)
-            text_surface = font.render(input_text, True, self.BLACK)
-            text_rect = text_surface.get_rect(midleft=input_rect.midleft)
-            self.SCREEN.blit(text_surface, text_rect)
-            pygame.display.flip()
-
-        return input_value
 
 if __name__ == "__main__":
     solver = SudokuSolver()
