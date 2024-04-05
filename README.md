@@ -77,3 +77,17 @@ Temps d'exécution: 25.732917547225952 secondes
 !!!resultat!!!
 
 une moyenne de 23.685 sec pour le temps de resolution
+
+Pour le BackTracking :
+
+44 cases vides : 0.0010s
+45 cases vides : 0.0043s
+52 cases vides : 0.0140s
+57 cases vides : 0.0752s
+58 cases vides : 0.459s
+moyenne 0.1863
+
+Conclusion : 
+
+La méthode BrutForce ne peut résoudre des sudokus contenant plus de 9 cases sans mettre moins de 1 minutes, à ce stade, pour résoudre des sudokus trouvables dans le commerce, un humain irait plus vite.
+Contrairement à la méthode BackTracking qui arrive a remplir des sudokus avec 58 cases vides en moins de 1 minute.
